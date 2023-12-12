@@ -42,7 +42,7 @@ export class AppService {
   constructor(private httpService: HttpService, private readonly telegrafService: TelegrafService) { }
 
   getHello(): string {
-    return 'Hello World!';
+    return 'Hello Wor ld!';
   }
 
   async fetchData(id: string): Promise<any> {
