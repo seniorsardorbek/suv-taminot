@@ -1,9 +1,10 @@
 import {
-    Hears,
-    Message,
-    On,
-    Sender ,
-    Update, Ctx, Start
+  Ctx,
+  Hears,
+  Message,
+  On,
+  Start,
+  Update
 } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 
@@ -11,14 +12,14 @@ import { Context } from 'telegraf';
 export class AppUpdate {
     @Hears(/hi/)
     onMessage(@Message('text') reversedText: string) {
-        return "Assalom";
+        return "Assalom alaykum!";
     }
 
  
 
     @Start()
     async start(@Ctx() ctx : Context) {
-      await ctx.reply('Welcome');
+      await ctx.reply('Wellcome!');
     }
     @On('text')
     async onText(@Ctx() ctx: Context) {

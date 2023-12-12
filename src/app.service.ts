@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosResponse } from 'axios';
 import { TelegrafService } from './telegraf.service';
-import config from './shared/config';
 
 const codes = [
   'vea0dex6t',
