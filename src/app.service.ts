@@ -42,7 +42,6 @@ export class AppService {
   constructor(private httpService: HttpService, private readonly telegrafService: TelegrafService) { }
 
   getHello(): string {
-    this.handleCron()
     return 'Hello World!';
   }
 
