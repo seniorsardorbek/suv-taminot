@@ -42,7 +42,10 @@ export class AppService {
   constructor(private httpService: HttpService, private readonly telegrafService: TelegrafService) { }
 
   getHello(): string {
-    return 'Hello Wor ld!';
+    codes.map((el) => {
+      return  this.fetchData(el)
+     })
+    return 'Hello World!';
   }
 
   async fetchData(id: string): Promise<any> {
@@ -86,7 +89,7 @@ export class AppService {
   handleCron() {
     try {
       codes.map((el) => {
-        this.fetchData(el)
+       return  this.fetchData(el)
       })
     } catch (error) {
       console.log(error.message);
