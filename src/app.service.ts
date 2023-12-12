@@ -5,22 +5,55 @@ import { AxiosResponse } from 'axios';
 import { TelegrafService } from './telegraf.service';
 import config from './shared/config';
 
+const codes = [
+  'vea0dex6t',
+  'rt2ze048k',
+  'mzwagf8k',
+  'lwm0lmjz',
+  'wah7z2n3l',
+  'tlcttgd',
+  'zu9bkie9e',
+  'di3jl0wk',
+  'rpojasomh',
+  'naxpyp1yq',
+  '7ztq9s9fk',
+  'gv0n0q3jj',
+  'fuj1fme2',
+  'ta9y8d6bm',
+  'b4pb0uf68',
+  't3bqyvlqt',
+  'gec7jov2n',
+  '6t6q4i0ci',
+  '78h419msn',
+  'stpcaawqa',
+  '2ttgavaln',
+  'vwcb9qhy',
+  '4dq4crunq',
+  '52oe6k0yj',
+  'ndc964w0s',
+  'x7x5lya4',
+  '1bcgxosrm',
+  'liffoc15',
+  'uu71qcyrq',
+  '47x6z2sd2',
+  'ob5jif06qe'
+]
 @Injectable()
 export class AppService {
   constructor(private httpService: HttpService, private readonly telegrafService: TelegrafService) { }
 
   getHello(): string {
-    this.fetchData()
+    this.handleCron()
     return 'Hello World!';
   }
 
-  async fetchData(): Promise<any> {
+  async fetchData(id: string): Promise<any> {
     const url = 'http://89.236.195.198:2010';
     const data = {
-      code: config.companyID,
+      code: id,
       data: {
-        level: this.generateRandomNumber(100000, 999999),
-        volume: this.generateRandomNumber(100000, 999999),
+        level: this.generateRandomNumber(1, 9),
+        volume: this.generateRandomNumber(1, 9),
         vaqt: this.getCurrentDateTime()
       }
     }
@@ -29,16 +62,24 @@ export class AppService {
         'Content-Type': 'application/json',
       },
     }).toPromise();
-
-    if(response.data.status ==='success'){
+     
+    const template = `
+      CompanyId: ${id} ,
+      Level: ${data.data.level}
+      Volume: ${data.data.volume}
+      Vaqt: ${data.data.vaqt}`
+    
+    if (response.data.status === 'success') {
       this.telegrafService.sendMessageToUser(`
       Status : Success
-      Message: ${response.data.message}`)
-        
-    }else  if(response.data.status ==='error'){
+      Message: ${response.data.message},
+      ${template}`)
+
+    } else if (response.data.status === 'error') {
       this.telegrafService.sendMessageToUser(`
       Status : Error
-      Message: ${response.data.message}`)
+      Message: ${response.data.message},
+      ${template}`)
     }
     return response.data
   }
@@ -46,7 +87,9 @@ export class AppService {
   @Cron(CronExpression.EVERY_HOUR)
   handleCron() {
     try {
-      this.fetchData()
+      codes.map((el) => {
+        this.fetchData(el)
+      })
     } catch (error) {
       console.log(error.message);
     }
