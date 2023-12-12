@@ -82,7 +82,7 @@ export class AppService {
     return response.data
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   handleCron() {
     try {
       codes.map((el) => {
