@@ -21,23 +21,25 @@ const codes = [
   'ta9y8d6bm',
   'b4pb0uf68',
   't3bqyvlqt',
-  'gec7jov2n',
-  '6t6q4i0ci',
-  '78h419msn',
-  'stpcaawqa',
-  '2ttgavaln',
-  'vwcb9qhy',
-  '4dq4crunq',
-  '52oe6k0yj',
-  'ndc964w0s',
-  'x7x5lya4',
-  '1bcgxosrm',
   'liffoc15',
   'uu71qcyrq',
   '47x6z2sd2',
   'ob5jif06qe'
 ]
-
+const offCodes = [
+  "gec7jov2n",
+  "6t6q4i0ci",
+  "78h419msn",
+  "stpcaawqa",
+  "2ttgavaln",
+  "vwcb9qhy",
+  "4dq4crunq",
+  "52oe6k0yj",
+  "ndc964w0s",
+  "x7x5lya4",
+  "1bcgxosrm",
+  "405zlf9",
+]
 const numbers = [
   { "level": 5, "volume": 0.02 },
   { "level": 6, "volume": 0.03 },
@@ -101,12 +103,12 @@ export class AppService {
   constructor(private httpService: HttpService, private readonly telegrafService: TelegrafService) { }
 
   getHello(): string {
+    this.handleCron()
     return 'Suv Taminoti!';
   }
 
-  async fetchData(id: string): Promise<void> {
-    const { level, volume } = this.generateRandomNumber(5, 59)
-    console.log(level , volume);
+  async fetchData(id: string, level: number, volume: number): Promise<void> {
+    console.log(level, volume);
     const url = 'http://89.236.195.198:2010';
     const data = {
       code: id,
@@ -142,12 +144,17 @@ export class AppService {
     }
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_MINUTE)
   handleCron() {
     try {
       codes.map((el) => {
-       return  this.fetchData(el)
+        const { level, volume } = this.generateRandomNumber(5, 59)
+        return this.fetchData(el, level, volume)
       })
+      offCodes.map((el) => {
+        return this.fetchData(el, 0, 0)
+      })
+
     } catch (error) {
       console.log(error.message);
     }
