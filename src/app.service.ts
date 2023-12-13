@@ -142,7 +142,7 @@ export class AppService {
     }
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_HOUR)
   handleCron() {
     try {
       codes.map((el) => {
