@@ -10,10 +10,6 @@ import { Context } from 'telegraf';
 
 @Update()
 export class AppUpdate {
-    @Hears(/hi/)
-    onMessage(@Message('text') reversedText: string) {
-        return "Assalom alaykum!";
-    }
 
  
 
@@ -23,9 +19,8 @@ export class AppUpdate {
     }
     @On('text')
     async onText(@Ctx() ctx: Context) {
-      const userId = 2081782581;
       const messageText = 'Hello, user! This is your NestJS Telegraf bot.';
-      await ctx.telegram.sendMessage(userId, messageText);
+      await ctx.reply(messageText);
   
     }
     
